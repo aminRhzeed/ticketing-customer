@@ -3,7 +3,9 @@ import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 import Landscape from '../assets/images/aron-visuals.jpg'
 import { ReactComponent as Logo } from '../assets/images/logo.svg'
-import { FaUser, FaEnvelope, FaKey, FaCheck, FaXmark } from 'react-icons/fa6'
+import { FaEnvelope, FaKey } from 'react-icons/fa6'
+import { useSelector, useDispatch } from 'react-redux'
+import { login } from '../features/auth/authSlice.js'
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -12,6 +14,10 @@ function Login() {
     })
 
     const {email, password} = formData
+
+    const dispatch = useDispatch()
+
+    const { user, isLoading, isSuccess, message } = useSelector((state) => state.auth)
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -22,9 +28,11 @@ function Login() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        if(password !== retryPass) {
-            toast.error('Passwords Do Not Match')
+        const userData = {
+            email,
+            password
         }
+        dispatch(login(userData))
     }
 
     return (

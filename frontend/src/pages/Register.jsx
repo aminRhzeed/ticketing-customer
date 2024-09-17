@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import Landscape from '../assets/images/aron-visuals.jpg'
 import { ReactComponent as Logo } from '../assets/images/logo.svg'
 import { FaUser, FaEnvelope, FaKey, FaCheck, FaXmark } from 'react-icons/fa6'
+import { useSelector, useDispatch } from 'react-redux'
+import { register } from '../features/auth/authSlice.js'
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -14,13 +16,17 @@ function Register() {
     })
     const [passwordValidation, setPasswordValidation] = useState({
         length: false,
-        uppercase: false,
-        lowercase: false,
+        // uppercase: false,
+        // lowercase: false,
         number: false,
-        specialChar: false,
+        // specialChar: false,
     });
 
     const {name, email, password, retryPass} = formData
+
+    const dispatch = useDispatch()
+
+    const { user, isLoading, isSuccess, message } = useSelector((state) => state.auth)
 
     const validatePassword = (password) => {
         const length = password.length >= 8
@@ -59,6 +65,12 @@ function Register() {
             } else {
                 toast.success('Account created successfully');
                 // Submit the form (e.g., via an API call)
+                const userData = {
+                    name,
+                    email,
+                    password
+                }
+                dispatch(register(userData))
             }
         }
     }
