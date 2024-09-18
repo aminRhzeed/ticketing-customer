@@ -17,7 +17,7 @@ function Login() {
 
     const dispatch = useDispatch()
 
-    const { user, isLoading, isSuccess, message } = useSelector((state) => state.auth)
+    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -51,13 +51,11 @@ function Login() {
                         <form onSubmit={onSubmit} className='flex flex-col gap-y-4'>
                             <div className='input input-md input-bordered flex items-center gap-2'>
                                 <FaEnvelope className='h-3.5 w-3.5 opacity-70'/>
-                                <input type='email' className='grow' id='email' name='email' value={email}
-                                       onChange={onChange} placeholder='Email' required/>
+                                <input type='email' className='grow' id='email' name='email' value={email} onChange={onChange} placeholder='Email' required/>
                             </div>
                             <div className='input input-md input-bordered flex items-center gap-2'>
                                 <FaKey className='h-3.5 w-3.5 opacity-70'/>
-                                <input type='password' className='grow' id='password' name='password' value={password}
-                                       onChange={onChange} placeholder='Password' required/>
+                                <input type='password' className='grow' id='password' name='password' value={password} onChange={onChange} placeholder='Password' required/>
                             </div>
                             <div className='pt-8'>
                                 <button className='btn btn-primary btn-block'>Submit</button>
@@ -71,8 +69,7 @@ function Login() {
                 </div>
             </div>
             <div className='hidden md:flex md:flex-1'>
-                <img src={Landscape} className='object-cover object-center w-full h-full'
-                     alt='mountain near green trees at night'/>
+                <img src={Landscape} className='object-cover object-center w-full h-full' alt='mountain near green trees at night'/>
             </div>
         </section>
     )

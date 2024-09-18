@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Landscape from '../assets/images/aron-visuals.jpg'
 import { ReactComponent as Logo } from '../assets/images/logo.svg'
 import { FaUser, FaEnvelope, FaKey, FaCheck, FaXmark } from 'react-icons/fa6'
 import { useSelector, useDispatch } from 'react-redux'
-import { register } from '../features/auth/authSlice.js'
+import { register, reset } from '../features/auth/authSlice.js'
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -25,8 +25,19 @@ function Register() {
     const {name, email, password, retryPass} = formData
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const { user, isLoading, isSuccess, message } = useSelector((state) => state.auth)
+    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
+
+    useEffect(() => {
+        if(isError) {
+            toast.error(message)
+        }
+        if(isSuccess || user) {
+            navigate('/')
+        }
+        dispatch(reset())
+    }, [isError, isSuccess, user, message, navigate, dispatch])
 
     const validatePassword = (password) => {
         const length = password.length >= 8
@@ -63,7 +74,7 @@ function Register() {
             if (!allValidationsPassed) {
                 toast.error('Password does not meet the required criteria');
             } else {
-                toast.success('Account created successfully');
+                // toast.success('Account created successfully');
                 // Submit the form (e.g., via an API call)
                 const userData = {
                     name,
