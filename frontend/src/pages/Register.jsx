@@ -6,6 +6,7 @@ import { ReactComponent as Logo } from '../assets/images/logo.svg'
 import { FaUser, FaEnvelope, FaKey, FaCheck, FaXmark } from 'react-icons/fa6'
 import { useSelector, useDispatch } from 'react-redux'
 import { register, reset } from '../features/auth/authSlice.js'
+import Spinner from '../component/Spinner.jsx'
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -84,6 +85,10 @@ function Register() {
                 dispatch(register(userData))
             }
         }
+    }
+
+    if(isLoading) {
+        return <Spinner />
     }
     
     return (
